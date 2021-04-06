@@ -1,0 +1,12 @@
+{
+    "python.linting.pylintEnabled": false,
+    "python.analysis.disabled": ["unresolved-import", "use-before-def", "undefined-variable"],
+    "files.exclude": {
+        "**/*.python-version": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/*.pyc": true,
+        "**/__pycache__": true
+    },
+    "python.pythonPath": "/Users/ale/.local/share/virtualenvs/c-dios-python--Ub25NfA/bin/python"
+}

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>CleAir</title>
+    <title>CleanAir</title>
     <!-- BOOTSTRAP 4 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/lux/bootstrap.min.css">
     <!-- FONTS -->
@@ -14,34 +14,44 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;900&display=swap" rel="stylesheet">    
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+
+<script>
+    function timedRefresh(timeoutPeriod) {
+        setTimeout("location.reload(true);",timeoutPeriod);
+    }
+
+    window.onload = timedRefresh(5000);
+</script>
 </head>
 <body>
     <main class="container p-4">
-        <h1 class="display-4 text-center title mt-4">CleAir</h1>
+        <h1 class="display-4 text-center title mt-4">CleanAir</h1>
         <div class="row">
-
-            <div class="col-md-4 offset-md-4 my-auto">
-
+            <div class="col-md-8 offset-md-2 my-auto">
                 <div class="card">
-                    <div class="card-header">
-
-                        <form action="/create-task" method="POST">
-                            <div class="form-group">
-                                <input type="text" name="content" placeholder="Task" class="form-control" autofocus>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">Save</button>
-                        </form>
-                    </div>
                     <div class="card-body">
-                        <ul class="list-group">
-                            {% for task in tasks %}
-                            <li class="list-group-item">
-                                <span class="{% if task.done %} done {% endif %}">{{task.content}}</span> <a
-                                    href="/done/{{task.id}}" class="btn btn-success btn-sm">Done</a>
-                                <a href="{{url_for('delete', id=task.id)}}" class="btn btn-danger btn-sm">Delete</a>
-                            </li>
+                        <table class="table">
+                        <thead class="thead-light">
+                                <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Metrica</th>
+                                <th scope="col">Valor</th>
+                                <th scope="col"></th>
+                                </tr>
+                        </thead>
+                        <tbody>
+                            {% for metric in metrics %}
+                                <tr>
+                                <th scope="row">{{metric.id}}</th>
+                                <td>{{metric.created_date.strftime('%d-%m-%Y %H:%M')}}</td>
+                                <td class="text-capitalize">{{metric.metric}}</td>
+                                <td>{{metric.value}}</td>
+                                <td><a href="{{url_for('delete', id=metric.id)}}" class="btn btn-danger btn-sm float-right">Borrar</a></td>
+                                </tr>
                             {% endfor %}
-                        </ul>
+                        </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
