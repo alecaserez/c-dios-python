@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/tasks.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 
 class Task(db.Model):
@@ -17,16 +18,23 @@ def home():
 
 @app.route('/create-task', methods=['POST'])
 def create():
-    task = Task(content=request.form['content'], done=False)
-    db.session.add(task)
+    new_task = Task(content=request.form['content'], done= False)
+    db.session.add(new_task)
+    db.session.commit()
+    return redirect(url_for('home'))
+
+@app.route('/done/<id>')
+def done(id):
+    task = Task.query.filter_by(id=int(id)).first()
+    task.done = not(task.done)
     db.session.commit()
     return redirect(url_for('home'))
 
 @app.route('/delete/<id>')
 def delete(id):
-    task = Task.query.filter_by(id=int(id)).delete()
+    Task.query.filter_by(id=int(id)).delete()
     db.session.commit()
-    return redirect(url_for('home')) 
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True)
